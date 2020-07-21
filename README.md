@@ -28,7 +28,7 @@ robot_fleet rospackage within this repo enables co-ordination between multiple g
     * export START_YAW=0
     * export HUSKY_REALSENSE_ENABLED=true
     * export HUSKY_LMS1XX_ENABLED=true
-    * export USE_CUSTOM_MOVE_OBJECT_GAZEBO_PLUGIN=false  # set to true if you use custom plugin to move robot. False uses regular gazebo rostopics
+    * export USE_CUSTOM_MOVE_OBJECT_GAZEBO_PLUGIN=true  # set to true if you use custom plugin to move robot. False uses regular gazebo rostopics
 
 * roslaunch robot_fleet robot_fleet_rosbridge.launch
 
