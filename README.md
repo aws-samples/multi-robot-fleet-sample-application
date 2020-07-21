@@ -7,7 +7,7 @@ robot_fleet rospackage within this repo enables co-ordination between multiple g
 * [Colcon](https://colcon.readthedocs.io) - optional. Tested on colcon. catkin confirmed working on melodic only.
 * [Gazebo9](http://gazebosim.org/blog/gazebo9) - Gazebo simulator.
 
-**Usage:**
+**Usage**
 
 * clone this repository in your workspace
 * cd robot-fleet-sample-application
@@ -32,14 +32,14 @@ robot_fleet rospackage within this repo enables co-ordination between multiple g
 
 * roslaunch robot_fleet robot_fleet_rosbridge.launch
 
-**How it works:**
+**How it works**
 
 * One gazebo instance acts as rosbridge_server and others as rosbridge clients
 * We use rosbridge to pass current position information of robots in all gazebo instances
 * For all other gazebo instances, we dynamically create and remove static robot models that represent the robot running its actual environment. We use gazebo plugin to move the static model in sync with its actual position information that we gather from rosbridge
 * With RoboMaker, its easy to spin up the simulation with ROSBRIGE_SERVER, wait for its IP and pass that along for rest of CLIENT robots.
 
-**Files of interest in the repo:**
+**Files of interest in the repo**
 
 All core files pertaining to robot fleet are in _*robot_fleet*_ rospackage
 
@@ -47,11 +47,11 @@ All core files pertaining to robot fleet are in _*robot_fleet*_ rospackage
 * scripts/client_rosbridge.py
 * src/move_object.cc
 
-**Architecture:**
+**Architecture**
 
 ![multibot_image](multibot.png)
 
-**Roadmap:**
+**Roadmap**
 
 * Provide lamda function that sets up entire fleet with one single call.
 * Provide cloudformation and other ways to setup the stack on AWS.
