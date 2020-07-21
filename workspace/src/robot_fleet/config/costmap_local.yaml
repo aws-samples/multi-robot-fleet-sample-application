@@ -1,0 +1,7 @@
+global_frame: odom
+rolling_window: true
+
+plugins:
+  - {name: obstacles_laser,           type: "costmap_2d::ObstacleLayer"}
+  - {name: obstacles_3d,              type: "costmap_2d::VoxelLayer"}
+  - {name: inflation,                 type: "costmap_2d::InflationLayer"}
