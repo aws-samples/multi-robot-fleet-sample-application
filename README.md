@@ -1,7 +1,5 @@
 # Robot fleet simulation using concurrent gazebo instances
 
-REPO NAME: robot-fleet-sample-application
-
 robot_fleet rospackage within this repo enables co-ordination between multiple gazebo instances to simulate a fleet of robots. We can compound this further by having multiple robots within same simulation as mentioned [here](https://answers.ros.org/question/41433/multiple-robots-simulation-and-navigation/). However, this current version expects a single robot with physics in each simulation, and uses rosbridge server/clients to communicate between the simulation instances.
 
 **Requirements**
