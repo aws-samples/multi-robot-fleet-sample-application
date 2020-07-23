@@ -1,0 +1,138 @@
+import json
+import botocore
+import boto3
+from botocore.exceptions import WaiterError
+from botocore.waiter import WaiterModel
+from botocore.waiter import create_waiter_with_client
+import datetime
+
+ROBOMAKER_CLIENT = boto3.client('robomaker', '<aws_region>')
+
+SIM_ROBOMAKER_IAM_ARN = '<iam_role>'
+SIM_APPLICATION_ARN = '<simulation_app_arn>'
+SIM_SERVER_PORT_MAPPINGS = [
+                            {
+                            "applicationPort": 9090,
+                            "enableOnPublicIp": False,
+                            "jobPort": 9090
+                            }
+                        ]
+SIM_SUBNETS =  <subnets>
+SIM_SECURITY_GROUPS = <security_groups>
+SIM_ASSIGN_PUBLIC_IP = False
+
+def env_vars_for_sim(robot_name, robot_server_ip, rosbridge_state, start_x, start_y, start_yaw):
+    var_dict = {
+        "ROBOT_NAME" : robot_name,
+        "ROSBRIDGE_IP" : robot_server_ip,
+        "ROSBRIDGE_STATE" : rosbridge_state,
+        "START_X" : start_x,
+        "START_Y" : start_y,
+        "START_YAW" : start_yaw,
+        "HUSKY_REALSENSE_ENABLED": "true",
+        "HUSKY_LMS1XX_ENABLED": "true",
+        "USE_CUSTOM_MOVE_OBJECT_GAZEBO_PLUGIN":"true"
+        }
+    return var_dict
+
+def create_sim( env_variables, port_mappings=[] ):
+    create_response = ROBOMAKER_CLIENT.create_simulation_job(
+                        maxJobDurationInSeconds=3600,
+                        iamRole=SIM_ROBOMAKER_IAM_ARN,
+                        failureBehavior='Fail',
+                        simulationApplications=[
+                            {
+                            'application': SIM_APPLICATION_ARN,
+                            'applicationVersion': '$LATEST',
+                            'launchConfig': {
+                                'environmentVariables': env_variables,
+                                'packageName': 'robot_fleet',
+                                'launchFile': 'robot_fleet_rosbridge.launch',
+                                'portForwardingConfig': { 'portMappings': port_mappings }
+                                }
+                            },
+                        ],
+                        vpcConfig={
+                            'subnets': SIM_SUBNETS,
+                            'securityGroups': SIM_SECURITY_GROUPS,
+                            'assignPublicIp': SIM_ASSIGN_PUBLIC_IP  
+                        }
+                    )
+    return create_response
+
+
+def lambda_handler(event, context):
+
+    create_response = create_sim( env_vars_for_sim("MASTER_ROBOT","localhost", "SERVER", "0","0","3.143") , SIM_SERVER_PORT_MAPPINGS )
+    print(create_response)
+
+    simulation_arn = create_response['arn']
+    
+    waiter_name = 'SimJobCreated'
+    waiter_config = {
+                'version': 2,
+                'waiters': {
+                    'SimJobCreated': {
+                        'operation': 'DescribeSimulationJob',
+                        'delay': 5,  # seconds
+                        'maxAttempts': 60,
+                        'acceptors': [
+                            {
+                                'matcher': 'path',
+                                'expected': 'Pending',
+                                'argument': 'status',
+                                'state': 'retry'
+                            },
+                            {
+                                'matcher': 'path',
+                                'expected': 'Running',
+                                'argument': 'status',
+                                'state': 'success'
+                            },
+                            {
+                                'matcher': 'path',
+                                'expected': 'Terminated',
+                                'argument': 'status',
+                                'state': 'faliure'
+                            },
+                            {
+                                'matcher': 'path',
+                                'expected': 'Completed',
+                                'argument': 'status',
+                                'state': 'faliure'
+                            },
+                            {
+                                'matcher': 'path',
+                                'expected': 'Failed',
+                                'argument': 'status',
+                                'state': 'faliure'
+                            },
+                            ]
+                        }
+                    }
+                }
+    
+    waiter_model = WaiterModel(waiter_config)
+        
+    custom_waiter = create_waiter_with_client(waiter_name, waiter_model, ROBOMAKER_CLIENT)
+    custom_waiter.wait(job=simulation_arn)
+    print( "simulation created")
+    desc_result = ROBOMAKER_CLIENT.describe_simulation_job( job = simulation_arn )
+    print( datetime.datetime.now())
+    
+    network_interface = desc_result['networkInterface']
+    private_ip = network_interface['privateIpAddress']
+    
+    create_response = create_sim( env_vars_for_sim("CLIENT_ROBOT_1",private_ip, "CLIENT", "2" ,"2" ,"3.143") )
+    create_response = create_sim( env_vars_for_sim("CLIENT_ROBOT_2",private_ip, "CLIENT", "-3","-1","0") )
+    create_response = create_sim( env_vars_for_sim("CLIENT_ROBOT_3",private_ip, "CLIENT", "-3","-3","0") )
+
+    return {
+        'statusCode': 200,
+        'body': "all"
+    }
+    
+def main():
+    lambda_handler({},{})
+
+main()
