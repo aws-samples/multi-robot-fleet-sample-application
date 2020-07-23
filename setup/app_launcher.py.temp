@@ -47,8 +47,9 @@ def create_sim( env_variables, port_mappings=[] ):
                             'launchConfig': {
                                 'environmentVariables': env_variables,
                                 'packageName': 'robot_fleet',
-                                'launchFile': 'robot_fleet_rosbridge.launch',
-                                'portForwardingConfig': { 'portMappings': port_mappings }
+                                'launchFile': 'robot_fleet_rosbridge_w_rviz.launch',
+                                'portForwardingConfig': { 'portMappings': port_mappings },
+                                'streamUI': True
                                 }
                             },
                         ],

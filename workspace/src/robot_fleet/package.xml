@@ -25,6 +25,7 @@
   <exec_depend>rospy</exec_depend>
   <exec_depend>std_msgs</exec_depend>
   <exec_depend>gazebo_ros</exec_depend>
+  <exec_depend>rviz</exec_depend>
   <exec_depend>roslibpy-pip</exec_depend>
   <exec_depend>rosbridge_server</exec_depend>
   <exec_depend>rosbridge_suite</exec_depend>
