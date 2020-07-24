@@ -1,8 +1,0 @@
-- git:
-    uri: https://github.com/aws-robotics/aws-robomaker-small-warehouse-world.git
-    local-name: src/deps/aws-robomaker-small-warehouse-world
-    version: master
-- git:
-    uri: https://github.com/husky/husky.git
-    local-name: src/deps/husky
-    version: melodic-devel
