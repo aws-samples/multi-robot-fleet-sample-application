@@ -92,9 +92,7 @@ class MasterGazeboMover:
 
     def create_model(self, name, xml_file_name, pose_dict ):
         rospy.loginfo("Creating model {}".format(name))
-
-        full_path = self.sdf_file_path
-        xml_model = check_output([ self.path_xacro, full_path ]).strip('\n')
+        xml_model = check_output([ self.path_xacro, self.sdf_file_path]).strip('\n')
 
         request = SpawnModelRequest()
         request.model_name = name
