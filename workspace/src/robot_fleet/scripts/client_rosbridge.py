@@ -37,7 +37,7 @@ class SendData:
     def __init__(self):
         self.data_to_rosbridge = {}
         self.data_to_rosbridge['name'] = rospy.get_param('ROBOT_NAME')
-        self.data_to_rosbridge['robot_sdf_file'] = 'husky/model.sdf'
+        self.data_to_rosbridge['robot_sdf_file'] = rospy.get_param('ROBOT_SDF_FILE')
         self.data_to_rosbridge['navigation_pose'] = {}
         self.data_to_rosbridge['gazebo_pose'] = {}
         self.rosbridge_ip = rospy.get_param('ROSBRIDGE_IP')
