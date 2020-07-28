@@ -2,7 +2,7 @@
 
 # This script will create the AWS infrastructure required to launch the demo, as well as future multi-robot apps.
 BASE_DIR=`pwd`
-ROS_APP_DIR=$BASE_DIR/workspace
+ROS_APP_DIR=$BASE_DIR/simulation_ws
 LAUNCHER_APP_DIR=$BASE_DIR/setup/fleetLauncherApp
 STACK_NAME=multibotrosbridge
 AWS_PROFILE=default
