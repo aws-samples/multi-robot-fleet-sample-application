@@ -5,7 +5,7 @@ echo "ROS environment setup starting.."
 echo "###############################################################################"
 
 BASE_DIR=`pwd`
-APP_DIR=$BASE_DIR/workspace
+APP_DIR=$BASE_DIR/simulation_ws
 
 # Wait if apt is running. 
 while :
