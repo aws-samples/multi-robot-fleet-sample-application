@@ -1,10 +1,11 @@
 <?xml version="1.0"?>
 <launch>
+    <arg name="gui" default="false" />
     <param name="ROBOT_NAME" value="$(env ROBOT_NAME)"/>
-
+    <param name="ROBOT_SDF_FILE" value="$(find robot_fleet)/static_models_w_plugin/husky/model.sdf"/>
+    
     <arg name="ROSBRIDGE_STATE" value="$(env ROSBRIDGE_STATE)" />
     <param name="ROSBRIDGE_STATE" value="$(env ROSBRIDGE_STATE)"/>
-
     <param name="ROSBRIDGE_IP" value="$(env ROSBRIDGE_IP)" />
 
     <param name="use_custom_move_object_gazebo_plugin" value="$(optenv USE_CUSTOM_MOVE_OBJECT_GAZEBO_PLUGIN false)" />
@@ -26,7 +27,9 @@
     </include>
 
     <!-- Launch the world -->
-    <include file="$(find aws_robomaker_small_warehouse_world)/launch/no_roof_small_warehouse.launch" />
+    <include file="$(find aws_robomaker_small_warehouse_world)/launch/no_roof_small_warehouse.launch" >
+        <arg name="gui" default="$(arg gui)" />
+    </include>
 
     <!-- Run the map server -->
     <arg name="map_file" default="$(find aws_robomaker_small_warehouse_world)/maps/005/map.yaml"/>

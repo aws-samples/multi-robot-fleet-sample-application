@@ -42,6 +42,7 @@ class MasterGazeboMover:
     def __init__(self):
         self.robot_name = rospy.get_param('ROBOT_NAME')
         self.rosbridge_state = rospy.get_param('ROSBRIDGE_STATE')
+        self.sdf_file_path = rospy.get_param('ROBOT_SDF_FILE')
         self.use_custom_move_plugin = rospy.get_param('use_custom_move_object_gazebo_plugin')
         self.init_pubs()
         self.init_subs()
@@ -92,8 +93,7 @@ class MasterGazeboMover:
     def create_model(self, name, xml_file_name, pose_dict ):
         rospy.loginfo("Creating model {}".format(name))
 
-        full_path = self.rospack.get_path('robot_fleet') + '/static_models_w_plugin/' + xml_file_name
-        xml_model = check_output([ self.path_xacro, full_path ]).strip('\n')
+        xml_model = check_output([ self.path_xacro, self.sdf_file_path ]).strip('\n')
 
         request = SpawnModelRequest()
         request.model_name = name
