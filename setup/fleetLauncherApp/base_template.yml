@@ -1,0 +1,219 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: 
+
+    This base template deploys the backend stack for a RoboMaker application. 
+
+Parameters:
+
+    VpcCIDR: 
+        Description: Please enter the IP range (CIDR notation) for this VPC
+        Type: String
+        Default: 10.168.0.0/16
+
+    PublicSubnet1CIDR:
+        Description: Please enter the IP range (CIDR notation) for the public subnet in the first Availability Zone
+        Type: String
+        Default: 10.168.10.0/24
+
+    PublicSubnet2CIDR:
+        Description: Please enter the IP range (CIDR notation) for the public subnet in the second Availability Zone
+        Type: String
+        Default: 10.168.11.0/24
+
+    SimulationApplicationRenderingEngine:
+        Description: The rendering engine to use with the simulation application
+        Type: String
+        Default: OGRE
+
+    SimulationApplicationRenderingEngineVersion:
+        Description: The rendering engine to use with the simulation application version
+        Type: String
+        Default: 1.x
+
+    SimulationApplicationROSSoftwareSuite:
+        Description: Software suite for the simulation application
+        Type: String
+        Default: ROS  
+
+    SimulationApplicationSimulationSoftwareSuite:
+        Description: Simulaton software suite for the simulation application
+        Type: String
+        Default: Gazebo       
+
+    SimulationApplicationSimulationSoftwareSuiteVersion:
+        Description: Simulaton software suite version for the simulation application
+        Type: String
+        Default: "9"
+
+    SimulationApplicationROSRelease:
+        Description: Software suite for the simulation application
+        Type: String
+        Default: Melodic 
+
+    SimulationApplicationS3Key:
+        Description: Location of bundle within S3.
+        Type: String
+        Default: multirobotdemo/bundle/output.tar
+
+Resources:
+
+    VPC: 
+        Type: AWS::EC2::VPC
+        Properties:
+            CidrBlock: !Ref VpcCIDR
+            Tags: 
+                - Key: Name 
+                  Value: !Ref AWS::StackName
+
+    SimulationApplication: 
+        Type: AWS::RoboMaker::SimulationApplication
+        Properties:
+            RenderingEngine: 
+                Name: !Ref SimulationApplicationRenderingEngine
+                Version: !Ref SimulationApplicationRenderingEngineVersion
+            RobotSoftwareSuite: 
+                Name: !Ref SimulationApplicationROSSoftwareSuite
+                Version: !Ref SimulationApplicationROSRelease
+            SimulationSoftwareSuite: 
+                Name: !Ref SimulationApplicationSimulationSoftwareSuite
+                Version: !Ref SimulationApplicationSimulationSoftwareSuiteVersion
+            Sources: 
+              - Architecture: X86_64
+                S3Bucket: !Ref RoboMakerBasicS3Bucket
+                S3Key: !Ref SimulationApplicationS3Key
+            Tags:
+                "Name" : "LaunchSource"
+                "Type" : "MultiRobotServerlessLaunchApp"  
+    InternetGateway:
+        Type: AWS::EC2::InternetGateway
+        Properties:
+            Tags:
+                - Key: Name
+                  Value: !Ref AWS::StackName
+
+    InternetGatewayAttachment:
+        Type: AWS::EC2::VPCGatewayAttachment
+        Properties:
+            InternetGatewayId: !Ref InternetGateway
+            VpcId: !Ref VPC
+
+    RoboMakerBasicS3Bucket:
+        Type: AWS::S3::Bucket
+
+    PublicSubnet1: 
+        Type: AWS::EC2::Subnet
+        Properties:
+            VpcId: !Ref VPC
+            AvailabilityZone: !Select [ 0, !GetAZs '' ]
+            CidrBlock: !Ref PublicSubnet1CIDR
+            MapPublicIpOnLaunch: true
+            Tags: 
+                - Key: Name 
+                  Value: !Sub ${AWS::StackName} ${AWS::Region} Public Subnet (AZ1)
+
+    PublicSubnet2: 
+        Type: AWS::EC2::Subnet
+        Properties:
+            VpcId: !Ref VPC
+            AvailabilityZone: !Select [ 1, !GetAZs '' ]
+            CidrBlock: !Ref PublicSubnet2CIDR
+            MapPublicIpOnLaunch: true
+            Tags: 
+                - Key: Name 
+                  Value: !Sub ${AWS::StackName} ${AWS::Region} Public Subnet (AZ2)
+
+    PublicRouteTable:
+        Type: AWS::EC2::RouteTable
+        Properties: 
+            VpcId: !Ref VPC
+            Tags: 
+                - Key: Name 
+                  Value: !Sub ${AWS::StackName} ${AWS::Region} Public Routes
+
+    DefaultPublicRoute: 
+        Type: AWS::EC2::Route
+        DependsOn: InternetGatewayAttachment
+        Properties: 
+            RouteTableId: !Ref PublicRouteTable
+            DestinationCidrBlock: 0.0.0.0/0
+            GatewayId: !Ref InternetGateway
+
+    PublicSubnet1RouteTableAssociation:
+        Type: AWS::EC2::SubnetRouteTableAssociation
+        Properties:
+            RouteTableId: !Ref PublicRouteTable
+            SubnetId: !Ref PublicSubnet1
+
+    PublicSubnet2RouteTableAssociation:
+        Type: AWS::EC2::SubnetRouteTableAssociation
+        Properties:
+            RouteTableId: !Ref PublicRouteTable
+            SubnetId: !Ref PublicSubnet2
+
+    RoboMakerSimulationRole:
+        Type: 'AWS::IAM::Role'
+        Properties:
+            AssumeRolePolicyDocument:
+                Version: 2012-10-17
+                Statement:
+                -
+                    Effect: Allow
+                    Principal:
+                        Service:
+                        - robomaker.amazonaws.com
+                        - lambda.amazonaws.com
+                    Action:
+                        - sts:AssumeRole
+
+            Policies:
+                - 
+                    PolicyName: !Sub robomaker-multi-robot-fleet-simulation-inline-policy-${AWS::Region}
+                    PolicyDocument:
+                        Version: 2012-10-17
+                        Statement:
+                        -
+                            Effect: Allow
+                            Resource: 
+                            - !Join ['',['arn:aws:s3:::',!Ref RoboMakerBasicS3Bucket]]
+                            - !Join ['',['arn:aws:s3:::',!Ref RoboMakerBasicS3Bucket,'/*' ]]
+                            Action:
+                            - s3:List*
+                            - s3:Get*
+                            - s3:Put*
+                            - s3:DeleteObject
+
+
+            ManagedPolicyArns:
+                - 'arn:aws:iam::aws:policy/CloudWatchFullAccess'
+                - 'arn:aws:iam::aws:policy/AWSRoboMakerFullAccess'
+
+Outputs: 
+
+    VPC: 
+        Description: A reference to the created VPC
+        Value: !Ref VPC
+
+    DefaultSecurityGroupID: 
+        Description: The default security group created with the VPC
+        Value: !GetAtt VPC.DefaultSecurityGroup
+
+    PublicSubnet1:
+        Description: A reference to the public subnet in the 1st Availability Zone
+        Value: !Ref PublicSubnet1
+
+    PublicSubnet2: 
+        Description: A reference to the public subnet in the 2nd Availability Zone
+        Value: !Ref PublicSubnet2
+  
+    RoboMakerS3Bucket:
+        Description: The S3 bucket used to store your AWS RoboMaker assets.
+        Value: !Ref RoboMakerBasicS3Bucket
+
+    SimulationRole:
+        Description: The IAM role that the simulation application will use to access AWS resources.
+        Value: !GetAtt RoboMakerSimulationRole.Arn
+        
+    SimulationApplicationARN:
+        Description: The IAM role that the simulation application will use to access AWS resources.
+        Value: !GetAtt SimulationApplication.Arn
