@@ -4,8 +4,8 @@
   <version>1.0.0</version>
   <description>The robot_fleet package</description>
 
-  <maintainer email="vkkondur@amazon.com">vamshi konduri</maintainer>
-  <author email="vkkondur@amazon.com">vamshi konduri</author>
+  <maintainer email="ros-contributions@amazon.com">AWS RoboMaker</maintainer>
+  <author email="ros-contributions@amazon.com">AWS RoboMaker</author>
 
   <license>MIT</license>
 
