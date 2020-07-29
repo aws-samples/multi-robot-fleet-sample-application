@@ -40,4 +40,8 @@
 
     <!--- Run Move Base -->
     <include file="$(find robot_fleet)/launch/include/move_base.launch" />
+
+    <!--- Run Rviz -->
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find robot_fleet)/rviz/basic_data.rviz" />
+
 </launch>

@@ -48,7 +48,7 @@ waiter_config = {
     'SimJobCreated': {
       'operation': 'DescribeSimulationJob',
       'delay': 5,
-      'maxAttempts': 60,
+      'maxAttempts': 70,
       'acceptors': [
           { 'matcher': 'path', 'expected': 'Pending', 'argument': 'status', 'state': 'retry' },
           { 'matcher': 'path', 'expected': 'Running', 'argument': 'status',  'state': 'success' },
@@ -64,6 +64,11 @@ robomaker = boto3.client('robomaker')
 
 def create_application_config(input_params, is_server, server_ip): 
   
+  if (is_server):
+      port_mappings = SIM_SERVER_PORT_MAPPINGS
+  else:
+      port_mappings = []
+
   to_set_params = {
     "application": app_arn,
     "applicationVersion": "$LATEST",
@@ -71,6 +76,7 @@ def create_application_config(input_params, is_server, server_ip):
       "environmentVariables": input_params['environmentVariables'],
       "launchFile": input_params['launchFile'],
       "packageName": input_params['packageName'],
+      "portForwardingConfig" : { 'portMappings': port_mappings },
       "streamUI": DEFAULT_STREAM_UI
     }
   }
@@ -80,9 +86,6 @@ def create_application_config(input_params, is_server, server_ip):
   if (is_server):
     to_set_params['launchConfig']['environmentVariables']['ROSBRIDGE_STATE'] = "SERVER"
     to_set_params['launchConfig']['environmentVariables']['ROSBRIDGE_IP'] = "localhost"
-    to_set_params['launchConfig']['portForwardingConfig']: {
-      'portMappings': SIM_SERVER_PORT_MAPPINGS
-    }
   elif (server_ip):
     to_set_params['launchConfig']['environmentVariables']['ROSBRIDGE_STATE'] =  "CLIENT"
     to_set_params['launchConfig']['environmentVariables']['ROSBRIDGE_IP'] = server_ip

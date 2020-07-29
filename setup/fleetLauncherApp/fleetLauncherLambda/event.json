@@ -11,7 +11,7 @@
                 "USE_CUSTOM_MOVE_OBJECT_GAZEBO_PLUGIN":"true"
             },
             "packageName": "robot_fleet",
-            "launchFile": "robot_fleet_rosbridge_w_rviz.launch"
+            "launchFile": "robot_fleet_rosbridge.launch"
         },
         {
             "name": "robot2",
@@ -24,7 +24,7 @@
                 "USE_CUSTOM_MOVE_OBJECT_GAZEBO_PLUGIN":"true"
             },
             "packageName": "robot_fleet",
-            "launchFile": "robot_fleet_rosbridge_w_rviz.launch"
+            "launchFile": "robot_fleet_rosbridge.launch"
         },
         {
             "name": "robot3",
@@ -37,7 +37,7 @@
                 "USE_CUSTOM_MOVE_OBJECT_GAZEBO_PLUGIN":"true"
             },
             "packageName": "robot_fleet",
-            "launchFile": "robot_fleet_rosbridge_w_rviz.launch"
+            "launchFile": "robot_fleet_rosbridge.launch"
         }
     ],
     "server": {
@@ -51,6 +51,6 @@
             "USE_CUSTOM_MOVE_OBJECT_GAZEBO_PLUGIN":"true"
         },
         "packageName": "robot_fleet",
-        "launchFile": "robot_fleet_rosbridge_w_rviz.launch"
+        "launchFile": "robot_fleet_rosbridge.launch"
       }
   }
