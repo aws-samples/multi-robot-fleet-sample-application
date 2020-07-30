@@ -1,11 +1,12 @@
 # Robot fleet simulation using concurrent gazebo instances
 
-robot_fleet rospackage within this repo enables co-ordination between multiple gazebo instances to simulate a fleet of robots. We can compound this further by having multiple robots within same simulation as mentioned [here](https://answers.ros.org/question/41433/multiple-robots-simulation-and-navigation/). However, this current version expects a single robot with physics in each simulation, and uses rosbridge server/clients to communicate between the simulation instances.
+robot_fleet rospackage within this repo enables co-ordination between multiple [gazebo](http://gazebosim.org/tutorials?tut=ros_overview) instances to simulate a fleet of robots. We can compound this further by having multiple robots within same simulation as mentioned [here](https://answers.ros.org/question/41433/multiple-robots-simulation-and-navigation/). However, this current version expects a single robot with physics in each simulation, and uses [rosbridge](http://wiki.ros.org/rosbridge_suite) server/clients to communicate between the simulation instances.
 
 **Requirements**
-* [ROS Melodic](http://wiki.ros.org/melodic) - other versions have not been tested.
-* [Colcon](https://colcon.readthedocs.io) - optional. Tested on colcon. catkin confirmed working on melodic only.
+* [ROS Melodic](http://wiki.ros.org/melodic) - Other ROS versions have not been tested.
+* [Colcon](https://colcon.readthedocs.io) - Tested on colcon. catkin confirmed working on melodic only.
 * [Gazebo9](http://gazebosim.org/blog/gazebo9) - Gazebo simulator.
+* [Colcon bundle](https://github.com/colcon/colcon-bundle) - Enables packaging the application for running on RoboMaker.
 * [boto3](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) - AWS SDK for Python
 * [awscli](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) - AWS CLI setup on local machine with appropriate [credentials](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)
 
@@ -25,7 +26,8 @@ Running this file performs
    * rosdep install -y —from-path <path_of_repos>
    * colcon build; source install/setup.bash
    * colcon bundle
-* There are 6 env variables that need to be set for the launch to work correct. They are as follows
+
+Set the appropriate environement variables required for the application
 ```
     export ROBOT_NAME=server  # unique robot name
     export ROSBRIDGE_STATE=SERVER  # SERVER or CLIENT
@@ -38,14 +40,20 @@ Running this file performs
     export USE_CUSTOM_MOVE_OBJECT_GAZEBO_PLUGIN=true  # set to true if you use custom plugin to move robot. False uses regular gazebo rostopics
 ```
 
-Launch the ROS application with `roslaunch robot_fleet robot_fleet_rosbridge.launch gui:=true`
-
-To now be able to setup multi robot simulation on your AWS account run the command **AFTER** the above commands
+Setup multi robot simulation on your AWS account, run the following command **AFTER** running the above commands
 ```
 ./setup/aws_setup_sample.bash
 ```
 
-Running this file performs:
+To see the application running on your local machine, run the following command.
+```
+roslaunch robot_fleet robot_fleet_rosbridge.launch gui:=true
+```
+
+Note: this architecture assumes you run one gazebo application per instance
+
+Running this file performs
+
     * Deploying the cloudformation stack to setup the AWS environment
     * Creates and uploads the bundle file to AWS
     * Kicks off a lambda function to start the multi-robot-fleet on AWS
