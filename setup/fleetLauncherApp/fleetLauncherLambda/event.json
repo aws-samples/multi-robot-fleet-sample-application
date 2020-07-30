@@ -1,0 +1,56 @@
+{
+    "robots": [
+        {
+            "name": "robot1",
+            "environmentVariables": {
+                "START_X": "2",
+                "START_Y": "2",
+                "START_YAW": "3.143",
+                "HUSKY_REALSENSE_ENABLED": "true",
+                "HUSKY_LMS1XX_ENABLED": "true",
+                "USE_CUSTOM_MOVE_OBJECT_GAZEBO_PLUGIN":"true"
+            },
+            "packageName": "robot_fleet",
+            "launchFile": "robot_fleet_rosbridge.launch"
+        },
+        {
+            "name": "robot2",
+            "environmentVariables": {
+                "START_X": "-3",
+                "START_Y": "-1",
+                "START_YAW": "0",
+                "HUSKY_REALSENSE_ENABLED": "true",
+                "HUSKY_LMS1XX_ENABLED": "true",
+                "USE_CUSTOM_MOVE_OBJECT_GAZEBO_PLUGIN":"true"
+            },
+            "packageName": "robot_fleet",
+            "launchFile": "robot_fleet_rosbridge.launch"
+        },
+        {
+            "name": "robot3",
+            "environmentVariables": {
+                "START_X": "-3",
+                "START_Y": "-3",
+                "START_YAW": "0",
+                "HUSKY_REALSENSE_ENABLED": "true",
+                "HUSKY_LMS1XX_ENABLED": "true",
+                "USE_CUSTOM_MOVE_OBJECT_GAZEBO_PLUGIN":"true"
+            },
+            "packageName": "robot_fleet",
+            "launchFile": "robot_fleet_rosbridge.launch"
+        }
+    ],
+    "server": {
+        "name": "SERVER",
+        "environmentVariables": {
+            "START_X": "0",
+            "START_Y": "0",
+            "START_YAW": "0",
+            "HUSKY_REALSENSE_ENABLED": "true",
+            "HUSKY_LMS1XX_ENABLED": "true",
+            "USE_CUSTOM_MOVE_OBJECT_GAZEBO_PLUGIN":"true"
+        },
+        "packageName": "robot_fleet",
+        "launchFile": "robot_fleet_rosbridge.launch"
+      }
+  }

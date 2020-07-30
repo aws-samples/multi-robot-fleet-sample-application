@@ -1,0 +1,5 @@
+simulation_ws/build
+simulation_ws/bundle
+simulation_ws/install
+simulation_ws/log
+.current-aws-stack

@@ -4,8 +4,8 @@
   <version>1.0.0</version>
   <description>The robot_fleet package</description>
 
-  <maintainer email="vkkondur@amazon.com">vamshi konduri</maintainer>
-  <author email="vkkondur@amazon.com">vamshi konduri</author>
+  <maintainer email="ros-contributions@amazon.com">AWS RoboMaker</maintainer>
+  <author email="ros-contributions@amazon.com">AWS RoboMaker</author>
 
   <license>MIT</license>
 
@@ -22,6 +22,7 @@
   <build_export_depend>gazebo_ros</build_export_depend>
   <exec_depend>geometry_msgs</exec_depend>
   <exec_depend>roscpp</exec_depend>
+  <exec_depend>rviz</exec_depend>
   <exec_depend>rospy</exec_depend>
   <exec_depend>std_msgs</exec_depend>
   <exec_depend>gazebo_ros</exec_depend>

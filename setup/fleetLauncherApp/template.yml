@@ -1,0 +1,76 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Description: 
+
+    This template deploys the SAM-based Lambda function to run multiple robots across a batch of RoboMaker simulation jobs, the ROS application consolidates the fleet simulation to test complex robot interactions.
+
+Resources:
+
+    BaseStack:
+        Type: AWS::Serverless::Application
+        Properties:
+            Location: base_template.yml
+            TimeoutInMinutes: 10
+
+    LaunchSimulations:
+        Type: AWS::Serverless::Function 
+        Properties:
+          CodeUri: fleetLauncherLambda/
+          Handler: app.lambda_handler
+          Runtime: python3.8
+          Role: !GetAtt LambdaRole.Arn
+          Tracing: Active
+          Environment:
+            Variables:
+              S3_BUCKET: !GetAtt BaseStack.Outputs.RoboMakerS3Bucket
+              SIMULATION_APP_ARN: !GetAtt BaseStack.Outputs.SimulationApplicationARN
+              IAM_ROLE: !GetAtt BaseStack.Outputs.SimulationRole
+              SUBNET_1: !GetAtt BaseStack.Outputs.PublicSubnet1
+              SUBNET_2: !GetAtt BaseStack.Outputs.PublicSubnet2
+              SECURITY_GROUP: !GetAtt BaseStack.Outputs.DefaultSecurityGroupID
+
+    LambdaRole:
+        Type: 'AWS::IAM::Role'
+        Properties:
+            RoleName: !Sub robomaker-multi-robot-fleet-simulation-lambda-role-${AWS::Region}
+            AssumeRolePolicyDocument:
+                Version: 2012-10-17
+                Statement:
+                -
+                    Effect: Allow
+                    Principal:
+                        Service:
+                        - lambda.amazonaws.com
+                    Action:
+                        - sts:AssumeRole
+
+            Policies:
+                - 
+                    PolicyName: !Sub robomaker-multi-robot-fleet-simulation-lambda-inline-policy-${AWS::Region}
+                    PolicyDocument:
+                        Version: 2012-10-17
+                        Statement:
+                        -
+                            Effect: Allow
+                            Resource: 
+                            - !Join ['',['arn:aws:s3:::',!GetAtt BaseStack.Outputs.RoboMakerS3Bucket]]
+                            - !Join ['',['arn:aws:s3:::',!GetAtt BaseStack.Outputs.RoboMakerS3Bucket,'/*' ]]
+                            Action:
+                            - s3:List*
+                            - s3:Get*
+                        -
+                            Effect: Allow
+                            Resource: '*'
+                            Action:
+                            - robomaker:CreateSimulationJob
+                            - robomaker:StartSimulationJobBatch
+                        -
+                            Effect: Allow
+                            Resource: !GetAtt BaseStack.Outputs.SimulationRole
+                            Action:
+                            - iam:passRole
+                            
+            ManagedPolicyArns:
+                - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+                - 'arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess'
