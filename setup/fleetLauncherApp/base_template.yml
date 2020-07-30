@@ -185,7 +185,7 @@ Resources:
                         - 
                             Effect: Allow
                             Resource:
-                            - !Join ['', ['arn:aws:logs:::log-group:/aws/robomaker/SimulationJobs*']]
+                            - !Join ['', ['arn:aws:logs::log-group:/aws/robomaker/SimulationJobs*']]
                             Action:
                             - logs:CreateLogGroup
                             - logs:CreateLogStream
