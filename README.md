@@ -54,10 +54,10 @@ Note: this architecture assumes you run one gazebo application per instance
 
 Running this file performs
 
-    * Deploying the cloudformation stack to setup the AWS environment
-    * Creates and uploads the bundle file to AWS
-    * Kicks off a lambda function to start the multi-robot-fleet on AWS
- 
+   * Deploying the cloudformation stack to setup the AWS environment
+   * Creates and uploads the bundle file to AWS
+   * Kicks off a lambda function to start the multi-robot-fleet on AWS
+
 The follwing is the setup on AWS RoboMaker
 ![fleet_in_robomaker](readmeimages/fleet_robomaker.png)
 
