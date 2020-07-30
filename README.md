@@ -16,7 +16,7 @@ robot_fleet rospackage within this repo enables co-ordination between multiple [
 This section is to run a single instace of the above application. This will NOT kick off multiple robots, but is a good way to see whats under the hood in this application. Has been testing on colcon/catkin on ROS Melodic, Ubuntu 18.04.
 ```
 git clone https://github.com/aws-samples/multi-robot-fleet-sample-application.git
-cd robot-fleet-sample-application
+cd multi-robot-fleet-sample-application 
 ./setup/ros_setup.bash
 ```
 
