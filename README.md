@@ -23,8 +23,8 @@ cd robot-fleet-sample-application
 Running this file performs
    * new rosdep definition for - roslibpy
    * rosdep update
-   * rosws update - that pulls in husky and aws-robomaker-small-warehouse-world repositories
-   * Applies minor patches to both the above repos
+   * rosws update - pulls in husky and aws-robomaker-small-warehouse-world repositories
+   * Applies minor patches reqd to work with AWS RoboMaker
    * rosdep install -y —from-path <path_of_repos>
    * colcon build; source install/setup.bash
    * colcon bundle
@@ -49,7 +49,7 @@ roslaunch robot_fleet robot_fleet_rosbridge.launch gui:=true
 ```
 
 ### Cloud Execution
-To setup multi robot fleet simulation on your AWS account, run the following command **AFTER** running the **Local execution section**. The local ROS application need not be running for this.
+To setup multi robot fleet simulation on your AWS account, run the following command **AFTER** running the **Local execution** section. The local ROS application need not be running for this.
 ```
 ./setup/aws_setup_sample.bash
 ```
