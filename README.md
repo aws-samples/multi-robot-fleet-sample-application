@@ -6,12 +6,18 @@ robot_fleet rospackage within this repo enables co-ordination between multiple g
 * [ROS Melodic](http://wiki.ros.org/melodic) - other versions have not been tested.
 * [Colcon](https://colcon.readthedocs.io) - optional. Tested on colcon. catkin confirmed working on melodic only.
 * [Gazebo9](http://gazebosim.org/blog/gazebo9) - Gazebo simulator.
+* [boto3](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) - AWS SDK for Python
+* [awscli](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) - AWS CLI setup on local machine with appropriate [credentials](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)
 
 **Usage**
 
-* clone this repository in your workspace
-* cd robot-fleet-sample-application
-* ./setup/ros_setup.bash. This file takes care of
+```
+git clone https://github.com/aws-samples/multi-robot-fleet-sample-application.git
+cd robot-fleet-sample-application
+./setup/ros_setup.bash
+```
+
+Running this file performs
    * new rosdep definition for - roslibpy
    * rosdep update
    * rosws update - that pulls in husky and aws-robomaker-small-warehouse-world repositories
@@ -20,17 +26,33 @@ robot_fleet rospackage within this repo enables co-ordination between multiple g
    * colcon build; source install/setup.bash
    * colcon bundle
 * There are 6 env variables that need to be set for the launch to work correct. They are as follows
-    * export ROBOT_NAME=server  # unique robot name
-    * export ROSBRIDGE_STATE=SERVER  # SERVER or CLIENT
-    * export ROSBRIDGE_IP=localhost  # localhost for SERVER. IP of rosbridge for CLIENT
-    * export START_X=0  # start location of robot
-    * export START_Y=0
-    * export START_YAW=0
-    * export HUSKY_REALSENSE_ENABLED=true
-    * export HUSKY_LMS1XX_ENABLED=true
-    * export USE_CUSTOM_MOVE_OBJECT_GAZEBO_PLUGIN=true  # set to true if you use custom plugin to move robot. False uses regular gazebo rostopics
+```
+    export ROBOT_NAME=server  # unique robot name
+    export ROSBRIDGE_STATE=SERVER  # SERVER or CLIENT
+    export ROSBRIDGE_IP=localhost  # localhost for SERVER. IP of rosbridge for CLIENT
+    export START_X=0  # start location of robot
+    export START_Y=0
+    export START_YAW=0
+    export HUSKY_REALSENSE_ENABLED=true
+    export HUSKY_LMS1XX_ENABLED=true
+    export USE_CUSTOM_MOVE_OBJECT_GAZEBO_PLUGIN=true  # set to true if you use custom plugin to move robot. False uses regular gazebo rostopics
+```
 
-* roslaunch robot_fleet robot_fleet_rosbridge.launch
+Launch the ROS application with `roslaunch robot_fleet robot_fleet_rosbridge.launch gui:=true`
+
+To now be able to setup multi robot simulation on your AWS account run the command **AFTER** the above commands
+```
+./setup/aws_setup_sample.bash
+```
+
+Running this file performs:
+    * Deploying the cloudformation stack to setup the AWS environment
+    * Creates and uploads the bundle file to AWS
+    * Kicks off a lambda function to start the multi-robot-fleet on AWS
+ 
+The follwing is the setup on AWS RoboMaker
+![fleet_in_robomaker](readmeimages/fleet_robomaker.png)
+
 
 **How it works**
 
@@ -39,17 +61,10 @@ robot_fleet rospackage within this repo enables co-ordination between multiple g
 * For all other gazebo instances, we dynamically create and remove static robot models that represent the robot running its actual environment. We use gazebo plugin to move the static model in sync with its actual position information that we gather from rosbridge
 * With RoboMaker, its easy to spin up the simulation with ROSBRIGE_SERVER, wait for its IP and pass that along for rest of CLIENT robots.
 
-**Files of interest in the repo**
-
-All core files pertaining to robot fleet are in _*robot_fleet*_ rospackage
-
-* scripts/gazebo_model_mover.py
-* scripts/client_rosbridge.py
-* src/move_object.cc
 
 **Architecture**
 
-![multibot_image](multibot.png)
+![multibot_image](readmeimages/multibot.png)
 
 **Roadmap**
 
@@ -58,7 +73,7 @@ All core files pertaining to robot fleet are in _*robot_fleet*_ rospackage
 
 **Known issues**
 
-Currently this package does not perform time synchronization, and simulation update lockstep between gazebo instances.
+This package does not perform time synchronization, and simulation update lockstep between gazebo instances. Best results have been seen with homogeneous software stacks running on the gazebo instances.
 
 ## Security
 
