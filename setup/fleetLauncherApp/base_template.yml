@@ -182,11 +182,11 @@ Resources:
                             - s3:Get*
                             - s3:Put*
                             - s3:DeleteObject
-
-
-            ManagedPolicyArns:
-                - 'arn:aws:iam::aws:policy/CloudWatchFullAccess'
-                - 'arn:aws:iam::aws:policy/AWSRoboMakerFullAccess'
+                        - 
+                            Effect: Allow
+                            Resource:
+                            - !Join ['', ['arn:aws:logs:::log-group:/aws/robomaker/SimulationJobs']]
+                            Action: "*"
 
 Outputs: 
 
