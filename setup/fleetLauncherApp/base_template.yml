@@ -191,7 +191,15 @@ Resources:
                             - logs:CreateLogStream
                             - logs:PutLogEvents
                             - logs:DescribeLogStreams
-
+                        - 
+                            Effect: Allow
+                            Resource:
+                            - !Join ['', ['arn:aws:robomaker:::simulation-job*']]
+                            Action:
+                            - robomaker:UntagResource
+                            - robomaker:ListTagsForResource
+                            - robomaker:CancelSimulationJob
+                            - robomaker:TagResource
 Outputs: 
 
     VPC: 
