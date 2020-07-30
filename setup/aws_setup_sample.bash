@@ -22,7 +22,7 @@ s3Bucket=$(aws cloudformation describe-stacks --stack-name $STACK_NAME --query "
 if [ ! $s3Bucket==None ] || [ -f "$ROS_APP_DIR/bundle/output.tar" ]
 then
   echo "Uploading files..."
-  aws s3 cp $ROS_APP_DIR/bundle/output.tar s3://$s3Bucket/$S3_OUTPUT_KEY
+  aws s3 cp $ROS_APP_DIR/bundle/output.tar s3://$s3Bucket/$S3_OUTPUT_KEY --profile $AWS_PROFILE
 else
   echo "Bundle could not be uploaded. Please ensure \"$ROS_APP_DIR/bundle/output.tar\" and the S3 bucket \"$s3Bucket\" exist."
   exit
