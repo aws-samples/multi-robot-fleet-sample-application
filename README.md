@@ -49,7 +49,9 @@ roslaunch robot_fleet robot_fleet_rosbridge.launch gui:=true
 ```
 
 ### Cloud Execution
+
 To setup multi robot fleet simulation on your AWS account, run the following command **AFTER** running the **Local execution** section. The local ROS application need not be running for this.
+
 ```
 ./setup/aws_setup_sample.bash
 ```
@@ -61,9 +63,71 @@ Running this file performs
    * Kicks off a lambda function to start the multi-robot-fleet on AWS
    * Picks the corresponding params for the simulations from setup/fleetLauncherApp/fleetLauncherLambda/event.json
 
-The follwing is the setup on AWS RoboMaker
 ![fleet_in_robomaker](readmeimages/fleet_robomaker.png)
 
+*Figure 1. A multiple robot fleet running in AWS RoboMaker.*
+
+#### Setting the parameters in the cloud-based simulation
+
+To update the parameters, such as robot name (ROBOT) and starting positions, you can edit the event.json file at **fleetLaucherApp/fleetLauncherLambda/event.json**. 
+
+Here is the example JSON:
+
+```
+{
+    "robots": [
+        {
+            "name": "robot1",
+            "environmentVariables": {
+                "START_X": "2",
+                "START_Y": "2",
+                "START_YAW": "3.143",
+                "HUSKY_REALSENSE_ENABLED": "true",
+                "HUSKY_LMS1XX_ENABLED": "true",
+                "USE_CUSTOM_MOVE_OBJECT_GAZEBO_PLUGIN":"true"
+            },
+            "packageName": "robot_fleet",
+            "launchFile": "robot_fleet_rosbridge.launch"
+        }
+        ...
+    ],
+    "server": {
+        "name": "SERVER",
+        "environmentVariables": {
+            "START_X": "0",
+            "START_Y": "0",
+            "START_YAW": "0",
+            "HUSKY_REALSENSE_ENABLED": "true",
+            "HUSKY_LMS1XX_ENABLED": "true",
+            "USE_CUSTOM_MOVE_OBJECT_GAZEBO_PLUGIN":"true"
+        },
+        "packageName": "robot_fleet",
+        "launchFile": "robot_fleet_rosbridge.launch"
+      }
+  }
+```
+
+There are a group of optional attributes you can set if a ROSBridge server is already runnnigng or you want to customize the application details.
+
+```
+  "serverIP": "<ALREADY_RUNNING_ROSBRIDGE_SERVER>",
+  "simulationJobParams": {
+      "vpcConfig": {
+          "subnets": [],
+          "securityGroups": []
+      },
+      "iamRole": "<PRECREATED_IAM_ROLE>",
+      "outputLocation": {
+          "s3Bucket": "",
+          "s3Key": ""
+      }
+  },
+  "simulationApplicationArn": "<PRECREATED_SIMULATION_APPLICATION>"
+```
+
+#### Serverless Application Deployment
+
+If you want to run the simulation launcher lambda function in AWS and link to an automated testing workflow, follow the README instructions [here](setup/fleetLauncherApp/README.md).
 
 ## How it works
 
@@ -72,11 +136,11 @@ The follwing is the setup on AWS RoboMaker
 * For all other gazebo instances, we dynamically create and remove static robot models that represent the robot running its actual environment. We use gazebo plugin to move the static model in sync with its actual position information that we gather from rosbridge
 * With RoboMaker, its easy to spin up the simulation with ROSBRIGE_SERVER, wait for its IP and pass that along for rest of CLIENT robots.
 
-
 ## Architecture
 
 ![multibot_image](readmeimages/multibot.png)
 
+![cloud_architecture](readmeimages/cloud_architecture.png)
 
 ## Known issues
 
