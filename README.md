@@ -47,6 +47,7 @@ Setup multi robot simulation on your AWS account, run the following command **AF
 
 To see the application running on your local machine, run the following command.
 ```
+source simulation_ws/install/setup.bash
 roslaunch robot_fleet robot_fleet_rosbridge.launch gui:=true
 ```
 
