@@ -4,8 +4,8 @@
 BASE_DIR=`pwd`
 ROS_APP_DIR=$BASE_DIR/simulation_ws
 LAUNCHER_APP_DIR=$BASE_DIR/setup/fleetLauncherApp
-STACK_NAME=multibotrosbridge
-AWS_PROFILE=default
+STACK_NAME=multibotrosbridgenew
+AWS_PROFILE=default_old
 CURRENT_STACK=.current-aws-stack
 S3_OUTPUT_KEY=multirobotdemo/bundle/output.tar
 
