@@ -107,7 +107,7 @@ Here is the example JSON:
   }
 ```
 
-There are a group of optional attributes you can set if a ROSBridge server is already runnnigng or you want to customize the application details.
+There are a group of optional attributes you can set if a ROSBridge server is already runnnig or you want to customize the application details.
 
 ```
   "serverIP": "<ALREADY_RUNNING_ROSBRIDGE_SERVER>",
