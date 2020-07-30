@@ -29,15 +29,15 @@ Running this file performs
 
 Set the appropriate environement variables required for the application
 ```
-    export ROBOT_NAME=server  # unique robot name
-    export ROSBRIDGE_STATE=SERVER  # SERVER or CLIENT
-    export ROSBRIDGE_IP=localhost  # localhost for SERVER. IP of rosbridge for CLIENT
-    export START_X=0  # start location of robot
-    export START_Y=0
-    export START_YAW=0
-    export HUSKY_REALSENSE_ENABLED=true
-    export HUSKY_LMS1XX_ENABLED=true
-    export USE_CUSTOM_MOVE_OBJECT_GAZEBO_PLUGIN=true  # set to true if you use custom plugin to move robot. False uses regular gazebo rostopics
+export ROBOT_NAME=server  # unique robot name
+export ROSBRIDGE_STATE=SERVER  # SERVER or CLIENT
+export ROSBRIDGE_IP=localhost  # localhost for SERVER. IP of rosbridge for CLIENT
+export START_X=0  # start location of robot
+export START_Y=0
+export START_YAW=0
+export HUSKY_REALSENSE_ENABLED=true
+export HUSKY_LMS1XX_ENABLED=true
+export USE_CUSTOM_MOVE_OBJECT_GAZEBO_PLUGIN=true  # set to true if you use custom plugin to move robot. False uses regular gazebo rostopics
 ```
 
 Setup multi robot simulation on your AWS account, run the following command **AFTER** running the above commands
