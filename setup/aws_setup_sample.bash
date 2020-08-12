@@ -28,5 +28,5 @@ else
   exit
 fi
 
-read -t 15 -p "Press any key to launch the sample simulation, or any other key to exit." some_key
+read -t 15 -p "Press any key to launch the sample simulation, or Ctrl+c within 15 seconds to exit." some_key
 python3 $LAUNCHER_APP_DIR/fleetLauncherLambda/app.py $STACK_NAME
