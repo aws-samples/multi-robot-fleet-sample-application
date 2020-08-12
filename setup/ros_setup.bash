@@ -27,11 +27,6 @@ cd $APP_DIR
 rosws update
 #patch the files to the 3rd party repositories.
 cd $APP_DIR
-cd src/deps/husky
-# This patch is to comment out env-hooks meant to run on real robots
-patch --force -p1 < ../../../../setup/patches/husky.patch
-
-cd $APP_DIR
 cd src/deps/aws-robomaker-small-warehouse-world
 # This patch is to increase the friction coefficient of the ground to prevent husky slipping
 patch --force -p1 <  ../../../../setup/patches/aws-robomaker-small-warehouse-world.patch
