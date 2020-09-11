@@ -22,6 +22,10 @@ done
 sudo apt-get update
 source /opt/ros/$ROS_DISTRO/setup.sh
 
+sudo apt-get install ros-melodic-rosbridge-suite \
+python-pip \ 
+python3-pip
+
 #download 3rd party repositories 
 cd $APP_DIR
 rosws update
@@ -53,10 +57,6 @@ fi
 cd $APP_DIR
 rosdep update
 rosdep install --from-paths src --ignore-src -r -y
-
-sudo apt-get install ros-melodic-rosbridge-suite \
-python-pip \ 
-python3-pip
 
 sudo pip install pymongo==3.10.1 \
 inject==3.5.4 \
