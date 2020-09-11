@@ -6,3 +6,7 @@
     uri: https://github.com/husky/husky.git
     local-name: src/deps/husky
     version: melodic-devel
+- git:
+    uri: https://github.com/groove-x/mqtt_bridge.git
+    local-name: src/deps/mqtt_bridge
+    version: master

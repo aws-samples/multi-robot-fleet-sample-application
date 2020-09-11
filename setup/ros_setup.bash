@@ -54,6 +54,15 @@ cd $APP_DIR
 rosdep update
 rosdep install --from-paths src --ignore-src -r -y
 
+sudo apt-get install ros-melodic-rosbridge-suite \
+python-pip \ 
+python3-pip
+
+sudo pip install pymongo==3.10.1 \
+inject==3.5.4 \
+paho-mqtt==1.5.0 \
+msgpack-python==0.5.6
+
 sudo pip3 install -U colcon-common-extensions colcon-ros-bundle colcon-bundle
 colcon build
 source install/setup.bash
