@@ -22,9 +22,9 @@ done
 sudo apt-get update
 source /opt/ros/$ROS_DISTRO/setup.sh
 
-sudo apt-get install ros-melodic-rosbridge-suite \
-python-pip \ 
-python3-pip
+sudo apt-get install ros-melodic-rosbridge-suite -y
+sudo apt-get install python-pip -y 
+sudo apt-get install python3-pip -y
 
 #download 3rd party repositories 
 cd $APP_DIR
