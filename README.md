@@ -2,6 +2,8 @@
 
 robot_fleet rospackage within this repo enables co-ordination between multiple [gazebo](http://gazebosim.org/tutorials?tut=ros_overview) instances to simulate a fleet of robots. We can compound this further by having multiple robots within same simulation as mentioned [here](https://answers.ros.org/question/41433/multiple-robots-simulation-and-navigation/). However, this current version expects a single robot with physics in each simulation, and uses [rosbridge](http://wiki.ros.org/rosbridge_suite) server/clients to communicate between the simulation instances.
 
+![Screenshot](readmeimages/screenshot.png)
+
 ## Requirements
 * [ROS Melodic](http://wiki.ros.org/melodic) - Other ROS versions have not been tested.
 * [Colcon](https://colcon.readthedocs.io) - Tested on colcon. catkin confirmed working on melodic only.
