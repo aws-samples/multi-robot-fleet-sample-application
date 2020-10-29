@@ -29,7 +29,7 @@ sim_job_params = {
       "simulationApplications": [],
       "vpcConfig": {
         "securityGroups": [ os.getenv('SECURITY_GROUP') ] if "SECURITY_GROUP" in os.environ else [],
-        "subnets": [ os.getenv('SUBNET_1'), os.getenv('SUBNET_1') ] if ("SUBNET_1" in os.environ and "SUBNET_2" in os.environ) else []
+        "subnets": [ os.getenv('SUBNET_1'), os.getenv('SUBNET_2') ] if ("SUBNET_1" in os.environ and "SUBNET_2" in os.environ) else []
       },
       "outputLocation": {
         "s3Bucket": os.getenv("S3_BUCKET"),
