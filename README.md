@@ -142,6 +142,10 @@ If you want to run the simulation launcher lambda function in AWS and link to an
 
 ![cloud_architecture](readmeimages/cloud_architecture.png)
 
+## Workshop for the Application
+
+Follow the workshop built around this application by visiting our [workshop page](https://stage.robomakerworkshops.com/ws/multi_robot_fleet_simulations)
+
 ## Known issues
 
 This package does not perform time synchronization, and simulation update lockstep between gazebo instances. Best results have been seen with homogeneous software stacks running on the gazebo instances.
