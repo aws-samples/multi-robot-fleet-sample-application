@@ -10,9 +10,21 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   gazebo_ros
+  message_generation
 )
 
 find_package(gazebo REQUIRED)
+
+add_message_files(
+  FILES
+  MQTT_GAZEBO_STATE.msg
+  MQTT_POSE.msg
+)
+
+generate_messages(
+  DEPENDENCIES
+  std_msgs  # Or other packages containing msgs
+)
 
 link_directories(${GAZEBO_LIBRARY_DIRS})
 include_directories(${Boost_INCLUDE_DIR} ${catkin_INCLUDE_DIRS} ${GAZEBO_INCLUDE_DIRS})
@@ -24,11 +36,14 @@ catkin_package(
   DEPENDS
     roscpp
     gazebo_ros
+    message_runtime
 )
 
 catkin_install_python(PROGRAMS
   scripts/client_rosbridge.py
+  scripts/client_mqtt.py
   scripts/gazebo_model_mover.py
+  scripts/gazebo_model_mover_mqtt.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 install(DIRECTORY launch static_models_w_plugin rviz config

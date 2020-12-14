@@ -1,0 +1,20 @@
+mqtt:
+  client:
+    protocol: 4      # MQTTv311
+  connection:
+    host: localhost #ip address of the public mqtt broker
+    port: 1883
+    keepalive: 60
+  private_path: device/001
+serializer: json:dumps
+deserializer: json:loads
+bridge:
+  # ping pong
+  - factory: mqtt_bridge.bridge:RosToMqttBridge
+    msg_type: robot_fleet.msg:MQTT_GAZEBO_STATE
+    topic_from: /client_robot_data
+    topic_to: client_robot_data_to_mqtt
+  - factory: mqtt_bridge.bridge:MqttToRosBridge
+    msg_type: robot_fleet.msg:MQTT_GAZEBO_STATE
+    topic_from: client_robot_data_to_mqtt
+    topic_to: /remapped_client_robot_data

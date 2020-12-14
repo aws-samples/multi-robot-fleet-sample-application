@@ -2,6 +2,7 @@
 <launch>
     <arg name="gui" default="false" />
     <arg name="rviz" default="true" />
+    <arg name="use_mqtt" default="true" />
 
     <param name="ROBOT_NAME" value="$(env ROBOT_NAME)"/>
     <param name="ROBOT_SDF_FILE" value="$(find robot_fleet)/static_models_w_plugin/husky/model.sdf"/>
@@ -12,27 +13,40 @@
 
     <param name="use_custom_move_object_gazebo_plugin" value="$(optenv USE_CUSTOM_MOVE_OBJECT_GAZEBO_PLUGIN false)" />
 
-    <group if="$(eval ROSBRIDGE_STATE=='SERVER')" >
+    <group if="$(eval ROSBRIDGE_STATE=='SERVER' and not use_mqtt)" >
         <param name="ROSBRIDGE_IP" value="localhost"/>
         <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" />
     </group>
     
-    <!-- Launch robot_fleet specific nodes -->
-    <node name="gazebo_model_mover" pkg="robot_fleet" type="gazebo_model_mover.py" />
-    <node name="client_rosbridge" pkg="robot_fleet" type="client_rosbridge.py" />
+    <group if="$(arg use_mqtt)">
+    <!-- Launch MQTT Bridge for to and fro communication with mqtt broker-->
+        <arg name="use_tls" default="false" />
+        <node name="mqtt_bridge" pkg="mqtt_bridge" type="mqtt_bridge_node.py" output="screen">
+            <rosparam command="load" file="$(find robot_fleet)/config/mqtt_broker_config.yaml" />
+        </node>
+        <node name="gazebo_model_mover_mqtt" pkg="robot_fleet" type="gazebo_model_mover_mqtt.py" />
+        <node name="client_mqtt" pkg="robot_fleet" type="client_mqtt.py" />
+    </group>
 
+    <group unless="$(arg use_mqtt)">
+    <!--Launch robot_fleet specific nodes -->
+        <node name="gazebo_model_mover" pkg="robot_fleet" type="gazebo_model_mover.py" />
+        <node name="client_rosbridge" pkg="robot_fleet" type="client_rosbridge.py" />
+    </group>
+    
     <include file="$(find husky_gazebo)/launch/spawn_husky.launch" >
         <arg name="x" value="$(env START_X)" />
         <arg name="y" value="$(env START_Y)" />
         <arg name="z" value="0.0" />
         <arg name="yaw" value="$(env START_YAW)" />
     </include>
-
+    
+    
     <!-- Launch the world -->
     <include file="$(find aws_robomaker_small_warehouse_world)/launch/no_roof_small_warehouse.launch" >
         <arg name="gui" default="$(arg gui)" />
     </include>
-
+    
     <!-- Run the map server -->
     <arg name="map_file" default="$(find aws_robomaker_small_warehouse_world)/maps/005/map.yaml"/>
     <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
@@ -45,5 +59,5 @@
 
     <!--- Run Rviz -->
     <node pkg="rviz" type="rviz" name="rviz" args="-d $(find robot_fleet)/rviz/basic_data.rviz" if="$(arg rviz)"/>
-
+    
 </launch>

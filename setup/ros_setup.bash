@@ -22,6 +22,10 @@ done
 sudo apt-get update
 source /opt/ros/$ROS_DISTRO/setup.sh
 
+sudo apt-get install ros-melodic-rosbridge-suite -y
+sudo apt-get install python-pip -y 
+sudo apt-get install python3-pip -y
+
 #download 3rd party repositories 
 cd $APP_DIR
 rosws update
@@ -53,6 +57,11 @@ fi
 cd $APP_DIR
 rosdep update
 rosdep install --from-paths src --ignore-src -r -y
+
+sudo pip install pymongo==3.10.1 \
+inject==3.5.4 \
+paho-mqtt==1.5.0 \
+msgpack-python==0.5.6
 
 sudo pip3 install -U colcon-common-extensions colcon-ros-bundle colcon-bundle
 colcon build

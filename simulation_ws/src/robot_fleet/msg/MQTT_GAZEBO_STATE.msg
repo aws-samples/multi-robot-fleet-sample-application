@@ -1,0 +1,4 @@
+string name
+string robot_sdf_file
+MQTT_POSE navigation_pose
+MQTT_POSE gazebo_pose
