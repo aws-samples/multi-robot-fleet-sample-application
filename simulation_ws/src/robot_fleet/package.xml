@@ -27,8 +27,7 @@
   <exec_depend>std_msgs</exec_depend>
   <exec_depend>gazebo_ros</exec_depend>
   <exec_depend>roslibpy-pip</exec_depend>
-  <exec_depend>rosbridge_server</exec_depend>
-  <exec_depend>rosbridge_suite</exec_depend>
+
 
   <export>
       <gazebo_ros plugin_path="${prefix}/lib" gazebo_media_path="${prefix}" gazebo_model_path="${prefix}/static_models_w_plugin" />
