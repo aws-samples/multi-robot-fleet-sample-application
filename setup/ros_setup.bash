@@ -25,11 +25,6 @@ source /opt/ros/$ROS_DISTRO/setup.sh
 #download 3rd party repositories 
 cd $APP_DIR
 rosws update
-#patch the files to the 3rd party repositories.
-cd $APP_DIR
-cd src/deps/aws-robomaker-small-warehouse-world
-# This patch is to increase the friction coefficient of the ground to prevent husky slipping
-patch --force -p1 <  ../../../../setup/patches/aws-robomaker-small-warehouse-world.patch
 
 #Update source list
 cd $BASE_DIR
@@ -54,7 +49,9 @@ cd $APP_DIR
 rosdep update
 rosdep install --from-paths src --ignore-src -r -y
 
-sudo pip3 install -U colcon-common-extensions colcon-ros-bundle colcon-bundle
+sudo apt-get install python3-apt python3-pip -y
+sudo pip3 install -U setuptools pip
+sudo pip3 install colcon-ros-bundle
 colcon build
 source install/setup.bash
 

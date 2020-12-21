@@ -6,3 +6,7 @@
     uri: https://github.com/husky/husky.git
     local-name: src/deps/husky
     version: melodic-devel
+- git:
+    uri: https://github.com/RobotWebTools/rosbridge_suite.git
+    local-name: src/deps/rosbridge_suite
+    version: 0.11.2

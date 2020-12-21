@@ -9,6 +9,8 @@ AWS_PROFILE=default
 CURRENT_STACK=.current-aws-stack
 S3_OUTPUT_KEY=multirobotdemo/bundle/output.tar
 
+sudo pip3 install boto3
+
 # Setup AWS resources for the application
 if [ ! -f "$CURRENT_STACK" ]; then
   # Deploy base stack (NOTE: This will NOT deploy the SAM-based Lambda function. To do that, follow the instructions in the README.)
