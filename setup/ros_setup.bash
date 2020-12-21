@@ -49,7 +49,7 @@ cd $APP_DIR
 rosdep update
 rosdep install --from-paths src --ignore-src -r -y
 
-sudo apt-get install python3-apt python3-pip
+sudo apt-get install python3-apt python3-pip -y
 sudo pip3 install -U setuptools pip
 sudo pip3 install colcon-ros-bundle
 colcon build
