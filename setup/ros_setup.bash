@@ -52,7 +52,6 @@ rosdep install --from-paths src --ignore-src -r -y
 sudo apt-get install python3-apt python3-pip -y
 sudo pip3 install -U setuptools pip
 sudo pip3 install colcon-ros-bundle
-sudo pip3 install boto3
 colcon build
 source install/setup.bash
 
