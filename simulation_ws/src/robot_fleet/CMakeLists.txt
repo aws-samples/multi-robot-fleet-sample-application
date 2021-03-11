@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(robot_fleet)
 
+cmake_policy(SET CMP0054 NEW)
+
 # c++11 if using kinetic
 add_definitions(-std=c++11)
 
