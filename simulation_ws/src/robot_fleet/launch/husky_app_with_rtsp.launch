@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="gui" default="false" />
+    <arg name="rviz" default="true" />
+
+    <!--- Run Husky app -->
+    <include file="$(find robot_fleet)/launch/husky_app_only.launch"/>
+    
+    <!--- Run ros-rtsp node after pulling in the package and dependencies at https://github.com/CircusMonkey/ros_rtsp -->
+    <include file="$(find ros_rtsp)/launch/rtsp_streams.launch" />
+
+</launch>
