@@ -4,9 +4,9 @@
   <arg name="scan_topic" default="scan" />
 
   <node pkg="amcl" type="amcl" name="amcl">
-    <param name="initial_pose_x" value="$(env START_X)"/>
-    <param name="initial_pose_y" value="$(env START_Y)"/>
-    <param name="initial_pose_a" value="$(env START_YAW)"/>
+    <param name="initial_pose_x" value="$(optenv START_X 0.0)"/>
+    <param name="initial_pose_y" value="$(optenv START_Y 0.0)"/>
+    <param name="initial_pose_a" value="$(optenv START_YAW 0.0)"/>
     <param name="use_map_topic" value="true"/>
     <param name="odom_model_type" value="diff"/>
     <param name="odom_alpha5" value="0.1"/>

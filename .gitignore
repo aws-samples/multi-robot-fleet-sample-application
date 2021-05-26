@@ -2,4 +2,7 @@ simulation_ws/build
 simulation_ws/bundle
 simulation_ws/install
 simulation_ws/log
+simulation_ws/src/deps
+simulation_ws/devel
+simulation_ws/build
 .current-aws-stack
