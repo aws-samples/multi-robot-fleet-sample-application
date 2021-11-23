@@ -11,6 +11,7 @@ This section is to run a single instace of the above application. This will NOT 
 ```
 git clone -b noetic-husky-mqtt-dev https://github.com/aws-samples/multi-robot-fleet-sample-application.git
 cd multi-robot-fleet-sample-application/simulation_ws
+sudo apt install python3-rosdep -y
 rosws update
 rosdep install -y -r --from-path src 
 catkin_make
