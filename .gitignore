@@ -5,4 +5,8 @@ simulation_ws/log
 simulation_ws/src/deps
 simulation_ws/devel
 simulation_ws/build
+simulation_ws/src/velocity_mqtt_manager/certs/*
+simulation_ws/src/velocity_mqtt_manager/config/*
+simulation_ws/.catkin_workspace
+simulation_ws/src/CMakeLists.txt
 .current-aws-stack

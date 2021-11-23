@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+    <!--- Run Husky app -->
+    <include file="$(find robot_fleet)/launch/husky_with_remapped_cmd_vel.launch"/>
+
+    <!-- Run velocity manager node for move_base/iot velocities -->
+    <node pkg="velocity_mqtt_manager" type="velocity_manager.py" name="velocity_manager" />
+
+
+</launch>
