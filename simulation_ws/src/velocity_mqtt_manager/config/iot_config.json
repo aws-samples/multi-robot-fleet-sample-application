@@ -1,0 +1,6 @@
+{
+    "endpoint" : "",
+    "rootCAPath" : "",
+    "privateKeyPath" : "",
+    "certificatePath" : ""
+}
