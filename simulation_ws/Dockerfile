@@ -1,10 +1,3 @@
-# To BUILD this example app
-# docker build -t robot_fleet:latest ./
-
-# To RUN this app
-# xhost +local
-# docker run -it --privileged --net=host -e DISPLAY robot_fleet:latest roslaunch robot_fleet husky_app_only.launch
-
 FROM ros:noetic
 
 # install tools
@@ -16,9 +9,7 @@ RUN git clone -b noetic-husky-mqtt-dev https://github.com/aws-samples/multi-robo
 # install app dependencies
 WORKDIR /multi-robot-fleet-sample-application/simulation_ws
 RUN rosws update
-#RUN cd src && git clone https://github.com/aws-robotics/aws-robomaker-small-warehouse-world
 RUN rosdep install --from-paths src -i -r -y
-#RUN apt install -y ros-noetic-husky-gazebo ros-noetic-husky-navigation
 
 # build app
 WORKDIR /multi-robot-fleet-sample-application/simulation_ws
