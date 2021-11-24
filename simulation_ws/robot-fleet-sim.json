@@ -1,0 +1,21 @@
+[
+    {
+        "application": "",
+        "applicationVersion": "$LATEST",
+        "launchConfig": {
+            "launchCommand": "roslaunch, velocity_mqtt_manager, velocity_mqtt_manager.launch",
+            "streamUI": true
+        },
+        "tools": [
+            {
+                "streamUI": true,
+                "name": "terminal",
+                "command": "/usr/bin/xterm",
+                "streamOutputToCloudWatch": true,
+                "exitBehavior": "FAIL"
+            }
+        ],
+        "useDefaultTools": false,
+        "useDefaultUploadConfigurations": false
+    }
+]
