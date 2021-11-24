@@ -27,7 +27,6 @@ docker tag robot_fleet:latest $ACCOUNT_ID.dkr.ecr.us-west-2.amazonaws.com/robot_
 
 # push image
 docker push $ACCOUNT_ID.dkr.ecr.us-west-2.amazonaws.com/robot_fleet:latest
-<<<<<<< HEAD
 
 # in a new terminal - update the AWS CLI
 cd ~
@@ -50,6 +49,3 @@ aws robomaker create-simulation-job  \
 --compute computeType=CPU --max-job-duration-in-seconds 3600 \
 --iam-role arn:aws:iam::$ACCOUNT_ID:role/robomaker_sim  \
 --simulation-application file://$HOME/environment/multi-robot-fleet-sample-application/simulation_ws/robot-fleet-sim.json
-
-=======
->>>>>>> 332466f... Add --rm and change ECR to robot_fleet
