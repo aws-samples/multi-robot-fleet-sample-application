@@ -15,6 +15,12 @@ source devel/setup.bash
 rosrun velocity_mqtt_manager mqtt_connector.py 
 
 # To run in RoboMaker
+# in a new terminal - update the AWS CLI
+cd ~
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+
 # get your account info
 export ACCOUNT_ID=$(aws sts get-caller-identity --query Account | bc)
 
@@ -28,12 +34,6 @@ docker tag robot_fleet:latest $ACCOUNT_ID.dkr.ecr.us-west-2.amazonaws.com/robot_
 # push image
 docker push $ACCOUNT_ID.dkr.ecr.us-west-2.amazonaws.com/robot_fleet:latest
 
-# in a new terminal - update the AWS CLI
-cd ~
-curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-unzip awscliv2.zip
-sudo ./aws/install
-
 # create robomaker simulation application
 aws robomaker create-simulation-application --name robot-fleet-sim \
 --simulation-software-suite name=SimulationRuntime \
@@ -44,9 +44,18 @@ aws robomaker create-simulation-application --name robot-fleet-sim \
 # paste into simulation_ws/robot-fleet-sim.json "application" field
 # save robot-fleet-sim.json file
 
+# get the VPC and subnet info
+export STACK_NAME=mod-049ef6d0db2440b4
+export SIM_ROLE_ARN=$(aws cloudformation describe-stacks --stack-name $STACK_NAME --query "Stacks[0].Outputs[?OutputKey=='SimulationRole'].OutputValue" --output text)
+export SECURITY_GROUP=$(aws cloudformation describe-stacks --stack-name $STACK_NAME --query "Stacks[0].Outputs[?OutputKey=='DefaultSecurityGroupID'].OutputValue" --output text)
+export SUBNET_1=$(aws cloudformation describe-stacks --stack-name $STACK_NAME --query "Stacks[0].Outputs[?OutputKey=='PublicSubnet1'].OutputValue" --output text)
+export SUBNET_2=$(aws cloudformation describe-stacks --stack-name $STACK_NAME --query "Stacks[0].Outputs[?OutputKey=='PublicSubnet2'].OutputValue" --output text)
+export SUBNET_3=$(aws cloudformation describe-stacks --stack-name $STACK_NAME --query "Stacks[0].Outputs[?OutputKey=='PublicSubnet3'].OutputValue" --output text)
+export VPC=$(aws cloudformation describe-stacks --stack-name $STACK_NAME --query "Stacks[0].Outputs[?OutputKey=='VPC'].OutputValue" --output text)
+
 # run the robomaker sim job
 aws robomaker create-simulation-job  \
 --compute computeType=CPU --max-job-duration-in-seconds 3600 \
---iam-role arn:aws:iam::$ACCOUNT_ID:role/robomaker_sim  \
+--iam-role $SIM_ROLE_ARN  \
+--vpc-config subnets=$SUBNET_1,$SUBNET_2,$SUBNET_3,securityGroups=$SECURITY_GROUP,assignPublicIp=false \
 --simulation-application file://$HOME/environment/multi-robot-fleet-sample-application/simulation_ws/robot-fleet-sim.json
-
