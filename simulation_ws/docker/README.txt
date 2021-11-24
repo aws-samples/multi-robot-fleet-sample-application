@@ -27,3 +27,26 @@ docker tag robot_fleet:latest $ACCOUNT_ID.dkr.ecr.us-west-2.amazonaws.com/robot_
 
 # push image
 docker push $ACCOUNT_ID.dkr.ecr.us-west-2.amazonaws.com/robot_fleet:latest
+
+# in a new terminal - update the AWS CLI
+cd ~
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+
+# create robomaker simulation application
+aws robomaker create-simulation-application --name robot-fleet-sim \
+--simulation-software-suite name=SimulationRuntime \
+--robot-software-suite name=General \
+--environment uri=$ACCOUNT_ID.dkr.ecr.us-west-2.amazonaws.com/robot_fleet:latest
+
+# copy the "arn" value returned then
+# paste into simulation_ws/robot-fleet-sim.json "application" field
+# save robot-fleet-sim.json file
+
+# run the robomaker sim job
+aws robomaker create-simulation-job  \
+--compute computeType=CPU --max-job-duration-in-seconds 3600 \
+--iam-role arn:aws:iam::$ACCOUNT_ID:role/robomaker_sim  \
+--simulation-application file://$HOME/environment/multi-robot-fleet-sample-application/simulation_ws/robot-fleet-sim.json
+
