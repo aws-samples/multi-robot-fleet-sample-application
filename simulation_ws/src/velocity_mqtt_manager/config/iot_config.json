@@ -1,6 +1,6 @@
 {
-    "endpoint" : "",
-    "rootCAPath" : "",
-    "certificatePath" : "",
-    "privateKeyPath" : ""
+    "endpoint" : "ENDPOINT",
+    "rootCAPath" : "ROOTCA",
+    "certificatePath" : "CERTPATH",
+    "privateKeyPath" : "PRIVATEKEY"
 }

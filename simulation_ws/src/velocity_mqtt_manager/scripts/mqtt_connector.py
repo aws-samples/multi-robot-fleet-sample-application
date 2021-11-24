@@ -85,6 +85,6 @@ class MqttManager:
 
 
 if __name__ == '__main__':
-    rospy.init_node('mqtt_manager')
+    rospy.init_node('mqtt_connector')
     node = MqttManager()
     node.main()

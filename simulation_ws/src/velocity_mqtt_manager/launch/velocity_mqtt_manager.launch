@@ -6,5 +6,7 @@
     <!-- Run velocity manager node for move_base/iot velocities -->
     <node pkg="velocity_mqtt_manager" type="velocity_manager.py" name="velocity_manager" />
 
+    <arg name="LAUNCH_MQTT" value="$(optenv LAUNCH_MQTT false)" />
+    <node pkg="velocity_mqtt_manager" type="mqtt_connector.py" name="mqtt_connector" if="$(arg LAUNCH_MQTT)" />
 
 </launch>
