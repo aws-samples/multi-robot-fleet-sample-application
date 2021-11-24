@@ -3,7 +3,7 @@
         "application": "",
         "applicationVersion": "$LATEST",
         "launchConfig": {
-            "launchCommand": "roslaunch, velocity_mqtt_manager, velocity_mqtt_manager.launch",
+            "command": ["roslaunch", "velocity_mqtt_manager", "velocity_mqtt_manager.launch"],
             "streamUI": true
         },
         "tools": [
