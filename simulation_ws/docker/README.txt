@@ -49,3 +49,4 @@ aws robomaker create-simulation-job  \
 --compute computeType=CPU --max-job-duration-in-seconds 3600 \
 --iam-role arn:aws:iam::$ACCOUNT_ID:role/robomaker_sim  \
 --simulation-application file://$HOME/environment/multi-robot-fleet-sample-application/simulation_ws/robot-fleet-sim.json
+
