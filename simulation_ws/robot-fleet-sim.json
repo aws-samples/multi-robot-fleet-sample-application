@@ -3,15 +3,7 @@
         "application": "",
         "applicationVersion": "$LATEST",
         "launchConfig": {
-<<<<<<< HEAD
-<<<<<<< HEAD
             "command": ["roslaunch", "velocity_mqtt_manager", "velocity_mqtt_manager.launch"],
-=======
-            "launchCommand": "roslaunch, velocity_mqtt_manager, velocity_mqtt_manager.launch",
->>>>>>> c8f4121... Add robot-fleet-sim.json file
-=======
-            "command": ["roslaunch", "velocity_mqtt_manager", "velocity_mqtt_manager.launch"],
->>>>>>> 8e7bcbc... Updated launch command
             "streamUI": true
         },
         "tools": [
