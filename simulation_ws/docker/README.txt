@@ -59,7 +59,7 @@ aws iot attach-policy --policy-name $IOT_POLICY_NAME --target $CERT_ARN
 export LAUNCH_MQTT=true
 cd multi-robot-fleet-sample-app/simulation_ws
 docker build -t robot_fleet:latest ./
-docker run -it --rm --privileged --net=host -e DISPLAY --name robot_fleet robot_fleet:latest roslaunch velocity_mqtt_manager velocity_mqtt_manager.launch
+docker run -it --rm --privileged --net=host -e DISPLAY -e LAUNCH_MQTT --name robot_fleet robot_fleet:latest roslaunch velocity_mqtt_manager velocity_mqtt_manager.launch
 
 # To run in RoboMaker
 ## Get your account info
