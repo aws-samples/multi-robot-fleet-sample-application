@@ -57,7 +57,7 @@ aws iot attach-policy --policy-name $IOT_POLICY_NAME --target $CERT_ARN
 ## To Connect to the IOT topics AFTER setting up certs and iot_config.json
 ## Set LAUNCH_MQTT=true and re-build then re-run
 export LAUNCH_MQTT=true
-cd multi-robot-fleet-sample-app/simulation_ws
+cd multi-robot-fleet-sample-application/simulation_ws
 docker build -t robot_fleet:latest ./
 docker run -it --rm --privileged --net=host -e DISPLAY -e LAUNCH_MQTT --name robot_fleet robot_fleet:latest roslaunch velocity_mqtt_manager velocity_mqtt_manager.launch
 
