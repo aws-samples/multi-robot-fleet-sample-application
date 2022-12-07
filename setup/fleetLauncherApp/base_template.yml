@@ -100,6 +100,12 @@ Resources:
 
     RoboMakerBasicS3Bucket:
         Type: AWS::S3::Bucket
+        Properties:
+            BucketEncryption:
+                ServerSideEncryptionConfiguration:
+                    - ServerSideEncryptionByDefault:
+                        SSEAlgorithm: "AES256"
+                      BucketKeyEnabled: true
 
     PublicSubnet1: 
         Type: AWS::EC2::Subnet
